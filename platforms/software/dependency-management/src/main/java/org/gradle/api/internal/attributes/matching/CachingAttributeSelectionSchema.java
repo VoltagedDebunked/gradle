@@ -20,6 +20,7 @@ import org.gradle.api.attributes.Attribute;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -47,12 +48,12 @@ public class CachingAttributeSelectionSchema implements AttributeSelectionSchema
 
     @Nullable
     @Override
-    public Set<Object> disambiguate(Attribute<?> attribute, @Nullable Object requested, Set<Object> candidates) {
+    public <T> Set<T> disambiguate(Attribute<T> attribute, @Nullable T requested, Set<T> candidates) {
         return delegate.disambiguate(attribute, requested, candidates);
     }
 
     @Override
-    public boolean matchValue(Attribute<?> attribute, Object requested, Object candidate) {
+    public <T> boolean matchValue(Attribute<T> attribute, T requested, T candidate) {
         return delegate.matchValue(attribute, requested, candidate);
     }
 

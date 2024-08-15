@@ -23,13 +23,12 @@ import org.gradle.api.attributes.AttributeDisambiguationRule
 import org.gradle.api.attributes.CompatibilityCheckDetails
 import org.gradle.api.attributes.MultipleCandidatesDetails
 import org.gradle.api.internal.attributes.AttributeContainerInternal
+import org.gradle.api.internal.attributes.AttributeSchemaServiceFactory
 import org.gradle.api.internal.attributes.DefaultAttributesSchema
-import org.gradle.api.internal.attributes.EmptySchema
 import org.gradle.api.internal.attributes.ImmutableAttributes
+import org.gradle.api.internal.attributes.immutable.ImmutableAttributesSchemaFactory
 import org.gradle.internal.component.model.AttributeMatchingExplanationBuilder
 import org.gradle.util.AttributeTestUtil
-import org.gradle.util.SnapshotTestUtil
-import org.gradle.util.TestUtil
 import spock.lang.Specification
 
 import javax.inject.Inject
@@ -550,8 +549,9 @@ class DefaultAttributeMatcherTest extends Specification {
         action.delegate = mutable
         action(mutable)
 
-        def selectionSchema = new DefaultAttributeSelectionSchema(mutable, EmptySchema.INSTANCE)
-        new DefaultAttributeMatcher(selectionSchema)
+        def factory = new ImmutableAttributesSchemaFactory()
+        def services = new AttributeSchemaServiceFactory(AttributeTestUtil.attributesFactory(), factory)
+        services.getMatcher(factory.create(mutable), ImmutableAttributesSchema.EMPTY)
     }
 
     private class TestSchema extends DefaultAttributesSchema {

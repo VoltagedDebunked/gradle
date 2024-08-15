@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,9 +48,9 @@ public interface AttributeSelectionSchema {
      * @return A subset of {@code candidates} which contain matched attribute values. Or, null if no matches were found.
      */
     @Nullable
-    Set<Object> disambiguate(Attribute<?> attribute, @Nullable Object requested, Set<Object> candidates);
+    <T> Set<T> disambiguate(Attribute<T> attribute, @Nullable T requested, Set<T> candidates);
 
-    boolean matchValue(Attribute<?> attribute, Object requested, Object candidate);
+    <T> boolean matchValue(Attribute<T> attribute, T requested, T candidate);
 
     /**
      * Determine if two values are compatible with each other. This is a "two directional"

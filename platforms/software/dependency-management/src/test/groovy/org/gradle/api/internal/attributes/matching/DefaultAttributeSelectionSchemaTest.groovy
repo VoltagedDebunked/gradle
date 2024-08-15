@@ -27,11 +27,10 @@ import org.gradle.api.attributes.CompatibilityCheckDetails
 import org.gradle.api.attributes.MultipleCandidatesDetails
 import org.gradle.api.attributes.Usage
 import org.gradle.api.internal.attributes.AttributesSchemaInternal
-import org.gradle.api.internal.attributes.DefaultAttributesSchema
-import org.gradle.api.internal.attributes.EmptySchema
 import org.gradle.api.internal.attributes.ImmutableAttributes
+import org.gradle.api.internal.attributes.immutable.ImmutableAttributesSchema
+import org.gradle.api.internal.attributes.immutable.ImmutableAttributesSchemaFactory
 import org.gradle.util.AttributeTestUtil
-import org.gradle.util.SnapshotTestUtil
 import org.gradle.util.TestUtil
 import spock.lang.Specification
 
@@ -407,10 +406,9 @@ class DefaultAttributeSelectionSchemaTest extends Specification {
     }
 
     private static AttributeSelectionSchema newSelectionSchema(@DelegatesTo(AttributesSchema) Closure<?> action = {}) {
-        AttributesSchemaInternal attributesSchema = new DefaultAttributesSchema(TestUtil.instantiatorFactory(), SnapshotTestUtil.isolatableFactory())
-        action.delegate = attributesSchema
-        action(attributesSchema)
-        new DefaultAttributeSelectionSchema(attributesSchema, EmptySchema.INSTANCE)
+        AttributesSchemaInternal attributesSchema = AttributeTestUtil.mutableSchema(action)
+        ImmutableAttributesSchema immutable = new ImmutableAttributesSchemaFactory().create(attributesSchema)
+        new DefaultAttributeSelectionSchema(immutable)
     }
 
     static interface Flavor extends Named {}
