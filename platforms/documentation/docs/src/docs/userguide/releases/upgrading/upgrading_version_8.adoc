@@ -90,6 +90,7 @@ val myConfig = buildscript.configurations.detachedConfiguration(
 val files = myConfig.files
 ----
 
+[[adding_to_configuration_container]]
 ==== Deprecated manually adding to configuration container
 
 Starting in Gradle 9.0, manually adding configuration instances to a configuration container will result in an error.
@@ -101,6 +102,24 @@ Calling the following methods on link:{javadocPath}/org/gradle/api/artifacts/Con
 - addAll(Collection)
 - addLater(Provider)
 - addAllLater(Provider)
+
+[[deprecate_legacy_configuration_get_files]]
+==== Deprecated `ResolvedConfiguration.getFiles()` and `LenientConfiguration.getFiles()`
+
+The link:{javadocPath}/org/gradle/api/artifacts/ResolvedConfiguration.html#getFiles()[ResolvedConfiguration.getFiles()] and link:{javadocPath}/org/gradle/api/artifacts/LenientConfiguration.html#getFiles()[LenientConfiguration.getFiles()] methods have been deprecated and will be removed in Gradle 9.0.
+
+These deprecated methods are not configuration cache compatible and do not track task dependencies, unlike their replacements.
+
+[source,kotlin]
+----
+val deprecated: Set<File> = conf.resolvedConfiguration.files
+val replacement: FileCollection = conf.incoming.files
+
+val lenientDeprecated: Set<File> = conf.resolvedConfiguration.lenientConfiguration.files
+val lenientReplacement: FileCollection = conf.incoming.artifactView {
+    isLenient = true
+}.files
+----
 
 ==== Deprecated `AbstractOptions`
 
