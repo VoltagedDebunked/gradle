@@ -550,6 +550,7 @@ class DefaultConfigurationCacheIO internal constructor(
             parallelStore = startParameter.isParallelStore,
             parallelLoad = startParameter.isParallelLoad,
             internalServices = service(),
+            problems = service(),
         )
 
     private
