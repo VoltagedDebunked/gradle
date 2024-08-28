@@ -156,6 +156,7 @@ class TestNGUpToDateCheckIntegrationTest extends AbstractIntegrationSpec {
                         targets {
                             all {
                                 testTask.configure {
+                                    println options.class
                                     options {
                                         $property $modification
                                     }
@@ -178,7 +179,7 @@ class TestNGUpToDateCheckIntegrationTest extends AbstractIntegrationSpec {
         'excludeGroups'       | '= ["group to exclude"]'
         'includeGroups'       | '= ["group to include"]'
         'outputDirectory'     | '= file("$buildDir/my-out")'
-        'suiteXmlFiles'       | '= [file("suite.xml")]'
+        'suiteXmlFiles'       | '.setFrom([file("suite.xml")])'
         'suiteXmlBuilder()'   | '''
                                 .suite(name: 'MySuite') {
                                     test(name: 'MyTest') {
