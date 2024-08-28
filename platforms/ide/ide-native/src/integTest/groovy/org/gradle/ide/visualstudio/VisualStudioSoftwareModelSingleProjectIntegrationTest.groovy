@@ -18,7 +18,6 @@ package org.gradle.ide.visualstudio
 import org.gradle.ide.visualstudio.fixtures.AbstractVisualStudioIntegrationSpec
 import org.gradle.ide.visualstudio.fixtures.MSBuildExecutor
 import org.gradle.integtests.fixtures.SourceFile
-import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.nativeplatform.fixtures.RequiresInstalledToolChain
 import org.gradle.nativeplatform.fixtures.app.CppHelloWorldApp
@@ -73,7 +72,6 @@ class VisualStudioSoftwareModelSingleProjectIntegrationTest extends AbstractVisu
     }
 
     @Issue("https://github.com/gradle/gradle/issues/790")
-    @ToBeFixedForConfigurationCache
     def "creating visual studio multiple time gives the same result"() {
         given:
         app.writeSources(file("src/main"))
@@ -91,13 +89,13 @@ model {
         def solutionFileContent = solutionFile("app.sln").file.text
 
         then:
-        executedAndNotSkipped getExecutableTasks("main")
+        executedAndNotSkipped getExecutableTasks("main") + ":appVisualStudioSolution"
 
         when:
         run "visualStudio"
 
         then:
-        skipped getExecutableTasks("main")
+        skipped getExecutableTasks("main") + ":appVisualStudioSolution"
 
         and:
         filtersFile("mainExe.vcxproj.filters").file.text == filtersFileContent
@@ -105,7 +103,6 @@ model {
         solutionFile("app.sln").file.text == solutionFileContent
     }
 
-    @ToBeFixedForConfigurationCache
     def "create visual studio solution for single executable"() {
         when:
         app.writeSources(file("src/main"))
@@ -146,7 +143,6 @@ model {
     }
 
     @Requires(IntegTestPreconditions.HasMsBuild)
-    @ToBeFixedForConfigurationCache
     def "can build executable from visual studio"() {
         useMsbuildTool()
         def debugBinary = executable("build/exe/main/win32/debug/main")
@@ -178,7 +174,6 @@ model {
     }
 
     @Requires(IntegTestPreconditions.HasMsBuild)
-    @ToBeFixedForConfigurationCache
     def "can build library from visual studio"() {
         useMsbuildTool()
         def debugBinaryLib = staticLibrary("build/libs/main/static/win32/debug/main")
@@ -211,7 +206,6 @@ model {
     }
 
     @Requires(IntegTestPreconditions.HasMsBuild)
-    @ToBeFixedForConfigurationCache
     def "can detect build failure from visual studio"() {
         useMsbuildTool()
 
@@ -240,7 +234,6 @@ model {
     }
 
     @Requires(IntegTestPreconditions.HasMsBuild)
-    @ToBeFixedForConfigurationCache
     def "can clean from visual studio"() {
         useMsbuildTool()
         def debugBinary = executable('build/exe/main/win32/debug/main')
@@ -278,7 +271,6 @@ model {
         file("build").assertDoesNotExist()
     }
 
-    @ToBeFixedForConfigurationCache
     def "create visual studio solution for library"() {
         when:
         app.library.writeSources(file("src/main"))
@@ -322,7 +314,6 @@ model {
         mainSolution.assertReferencesProject(dllProjectFile, projectConfigurations)
     }
 
-    @ToBeFixedForConfigurationCache
     def "create visual studio solution for build with an executable and library"() {
         when:
         app.executable.writeSources(file("src/main"))
@@ -367,7 +358,6 @@ model {
         mainSolution.assertReferencesProject(libProject, projectConfigurations)
     }
 
-    @ToBeFixedForConfigurationCache
     def "create visual studio project for executable that targets multiple platforms with the same architecture"() {
         when:
         app.writeSources(file("src/main"))
@@ -393,7 +383,6 @@ model {
         mainProjectFile.projectConfigurations.keySet() == ['win32Debug', 'otherWin32Debug', 'win32Release', 'otherWin32Release', 'x64Debug', 'x64Release'] as Set
     }
 
-    @ToBeFixedForConfigurationCache
     def "create visual studio solution for executable that has diamond dependency"() {
         def testApp = new ExeWithDiamondDependencyHelloWorldApp()
         testApp.writeSources(file("src/main"), file("src/hello"), file("src/greetings"))
@@ -442,7 +431,6 @@ model {
         exeProject.projectConfigurations['win32Debug'].includePath == filePath("src/main/headers", "src/hello/headers", "src/greetings/headers")
     }
 
-    @ToBeFixedForConfigurationCache
     def "generate visual studio solution for executable with mixed sources"() {
         given:
         def testApp = new MixedLanguageHelloWorldApp(toolChain)
@@ -466,7 +454,7 @@ model {
         final projectFile = projectFile("mainExe.vcxproj")
         projectFile.assertHasComponentSources(testApp, "src/main")
         projectFile.projectConfigurations.keySet() == projectConfigurations
-        with (projectFile.projectConfigurations['win32Debug']) {
+        with(projectFile.projectConfigurations['win32Debug']) {
             includePath == filePath("src/main/headers")
         }
 
@@ -475,7 +463,6 @@ model {
     }
 
     @RequiresInstalledToolChain(VISUALCPP)
-    @ToBeFixedForConfigurationCache
     def "generate visual studio solution for executable with windows resource files"() {
         given:
         def resourceApp = new WindowsResourceHelloWorldApp()
@@ -509,7 +496,7 @@ model {
         assert projectFile.resourceFiles == resources*.withPath("src/main").sort()
 
         projectFile.projectConfigurations.keySet() == projectConfigurations
-        with (projectFile.projectConfigurations['win32Debug']) {
+        with(projectFile.projectConfigurations['win32Debug']) {
             macros == "TEST;foo=bar"
             includePath == filePath("src/main/headers")
         }
@@ -518,7 +505,6 @@ model {
         solutionFile("app.sln").assertHasProjects("mainExe")
     }
 
-    @ToBeFixedForConfigurationCache
     def "builds solution for component with no source"() {
         given:
         buildFile << """
@@ -537,7 +523,7 @@ model {
         projectFile.sourceFiles == ['build.gradle']
         projectFile.headerFiles == []
         projectFile.projectConfigurations.keySet() == projectConfigurations
-        with (projectFile.projectConfigurations['win32Debug']) {
+        with(projectFile.projectConfigurations['win32Debug']) {
             includePath == filePath("src/main/headers")
         }
 
@@ -545,7 +531,6 @@ model {
         solutionFile("app.sln").assertHasProjects("mainExe")
     }
 
-    @ToBeFixedForConfigurationCache
     def "visual studio project includes headers co-located with sources"() {
         when:
         // Write headers so they sit with sources
@@ -571,11 +556,10 @@ model {
 
         and:
         final projectFile = projectFile("mainExe.vcxproj")
-        assert projectFile.sourceFiles == ['build.gradle'] + app.sourceFiles.collect({"src/main/cpp/${it.name}"}).sort()
-        assert projectFile.headerFiles == app.headerFiles.collect({"src/main/cpp/${it.name}"}).sort()
+        assert projectFile.sourceFiles == ['build.gradle'] + app.sourceFiles.collect({ "src/main/cpp/${it.name}" }).sort()
+        assert projectFile.headerFiles == app.headerFiles.collect({ "src/main/cpp/${it.name}" }).sort()
     }
 
-    @ToBeFixedForConfigurationCache
     def "visual studio solution with header-only library"() {
         given:
         def app = new CppHelloWorldApp()
@@ -613,36 +597,35 @@ model {
 
         and:
         final mainExeProject = projectFile("mainExe.vcxproj")
-        with (mainExeProject.projectConfigurations['win32Debug']) {
+        with(mainExeProject.projectConfigurations['win32Debug']) {
             includePath == filePath("src/main/headers", "src/helloApi/headers", "src/hello/headers")
         }
 
         and:
         final helloDllProject = projectFile("helloDll.vcxproj")
-        with (helloDllProject.projectConfigurations['win32Debug']) {
+        with(helloDllProject.projectConfigurations['win32Debug']) {
             includePath == filePath("src/hello/headers", "src/helloApi/headers")
         }
 
         and:
         final helloLibProject = projectFile("helloLib.vcxproj")
-        with (helloLibProject.projectConfigurations['win32Debug']) {
+        with(helloLibProject.projectConfigurations['win32Debug']) {
             includePath == filePath("src/hello/headers", "src/helloApi/headers")
         }
 
         and:
         final helloApiDllProject = projectFile("helloApiDll.vcxproj")
-        with (helloApiDllProject.projectConfigurations['win32Debug']) {
+        with(helloApiDllProject.projectConfigurations['win32Debug']) {
             includePath == filePath("src/helloApi/headers")
         }
 
         and:
         final helloApiLibProject = projectFile("helloApiLib.vcxproj")
-        with (helloApiLibProject.projectConfigurations['win32Debug']) {
+        with(helloApiLibProject.projectConfigurations['win32Debug']) {
             includePath == filePath("src/helloApi/headers")
         }
     }
 
-    @ToBeFixedForConfigurationCache
     def "create visual studio solution for executable with variant conditional sources"() {
         when:
         app.writeSources(file("src/win32"))
@@ -679,7 +662,6 @@ model {
         mainSolution.assertReferencesProject(projectFile, projectConfigurations)
     }
 
-    @ToBeFixedForConfigurationCache
     def "visual studio solution with pre-built library"() {
         given:
         app.writeSources(file("src/main"))
@@ -715,12 +697,11 @@ model {
 
         and:
         final mainExeProject = projectFile("mainExe.vcxproj")
-        with (mainExeProject.projectConfigurations['win32Debug']) {
+        with(mainExeProject.projectConfigurations['win32Debug']) {
             includePath == filePath("src/main/headers", "libs/test/include")
         }
     }
 
-    @ToBeFixedForConfigurationCache
     def "visual studio solution for executable that depends on library using precompiled header"() {
         when:
         app = new CppHelloWorldApp()
@@ -770,7 +751,6 @@ model {
         mainSolution.assertReferencesProject(dllProject, projectConfigurations)
     }
 
-    @ToBeFixedForConfigurationCache
     def "visual studio solution for component graph with library dependency cycle"() {
         given:
         def app = new ExeWithLibraryUsingLibraryHelloWorldApp()
@@ -811,36 +791,35 @@ model {
 
         and:
         final mainExeProject = projectFile("mainExe.vcxproj")
-        with (mainExeProject.projectConfigurations['win32Debug']) {
+        with(mainExeProject.projectConfigurations['win32Debug']) {
             includePath == filePath("src/main/headers", "src/hello/headers")
         }
 
         and:
         final helloDllProject = projectFile("helloDll.vcxproj")
-        with (helloDllProject.projectConfigurations['win32Debug']) {
-            includePath == filePath( "src/hello/headers", "src/greetings/headers")
+        with(helloDllProject.projectConfigurations['win32Debug']) {
+            includePath == filePath("src/hello/headers", "src/greetings/headers")
         }
 
         and:
         final helloLibProject = projectFile("helloLib.vcxproj")
-        with (helloLibProject.projectConfigurations['win32Debug']) {
-            includePath == filePath( "src/hello/headers", "src/greetings/headers")
+        with(helloLibProject.projectConfigurations['win32Debug']) {
+            includePath == filePath("src/hello/headers", "src/greetings/headers")
         }
 
         and:
         final greetingsDllProject = projectFile("greetingsDll.vcxproj")
-        with (greetingsDllProject.projectConfigurations['win32Debug']) {
+        with(greetingsDllProject.projectConfigurations['win32Debug']) {
             includePath == filePath("src/greetings/headers", "src/hello/headers")
         }
 
         and:
         final greetingsLibProject = projectFile("greetingsLib.vcxproj")
-        with (greetingsLibProject.projectConfigurations['win32Debug']) {
+        with(greetingsLibProject.projectConfigurations['win32Debug']) {
             includePath == filePath("src/greetings/headers", "src/hello/headers")
         }
     }
 
-    @ToBeFixedForConfigurationCache
     def "create visual studio solution where referenced projects have different configurations"() {
         when:
         app.executable.writeSources(file("src/main"))
@@ -882,12 +861,11 @@ model {
         and:
         final mainSolution = solutionFile("app.sln")
         mainSolution.assertHasProjects("mainExe", "helloDll", "helloLib")
-        mainSolution.assertReferencesProject(exeProject, ['win32':'win32', 'x64':'x64', 'win32Debug':'x64', 'win32Release':'x64', 'x64Debug':'x64', 'x64Release':'x64'])
-        mainSolution.assertReferencesProject(dllProject, ['win32Debug':'win32Debug', 'win32Release':'win32Release', 'x64Debug':'x64Debug', 'x64Release':'x64Release', 'win32':'x64Release', 'x64':'x64Release'])
-        mainSolution.assertReferencesProject(libProject, ['win32Debug':'win32Debug', 'win32Release':'win32Release', 'x64Debug':'x64Debug', 'x64Release':'x64Release', 'win32':'x64Release', 'x64':'x64Release'])
+        mainSolution.assertReferencesProject(exeProject, ['win32': 'win32', 'x64': 'x64', 'win32Debug': 'x64', 'win32Release': 'x64', 'x64Debug': 'x64', 'x64Release': 'x64'])
+        mainSolution.assertReferencesProject(dllProject, ['win32Debug': 'win32Debug', 'win32Release': 'win32Release', 'x64Debug': 'x64Debug', 'x64Release': 'x64Release', 'win32': 'x64Release', 'x64': 'x64Release'])
+        mainSolution.assertReferencesProject(libProject, ['win32Debug': 'win32Debug', 'win32Release': 'win32Release', 'x64Debug': 'x64Debug', 'x64Release': 'x64Release', 'win32': 'x64Release', 'x64': 'x64Release'])
     }
 
-    @ToBeFixedForConfigurationCache
     def "only create visual studio projects for buildable binaries"() {
         when:
         app.library.writeSources(file("src/both"))
@@ -954,7 +932,6 @@ model {
         solutionFile("app.sln").assertHasProjects("bothDll", "bothLib", "staticOnlyLib")
     }
 
-    @ToBeFixedForConfigurationCache
     def "can detect the language standard for Visual Studio IntelliSense [#expectedLanguageStandard] #uniqueIndex"() {
         given:
         app.writeSources(file("src/main"))
@@ -994,7 +971,6 @@ model {
         '-std:c++latest' | 'stdcpplatest'           | 6
     }
 
-    @ToBeFixedForConfigurationCache
     def "can detect different language standard per component for Visual Studio IntelliSense"() {
         given:
         app.writeSources(file("src/main"))
@@ -1032,7 +1008,6 @@ model {
         }
     }
 
-    @ToBeFixedForConfigurationCache
     def "does not configure language standard when compiler flag is absent for Visual Studio IntelliSense"() {
         given:
         app.writeSources(file("src/main"))
