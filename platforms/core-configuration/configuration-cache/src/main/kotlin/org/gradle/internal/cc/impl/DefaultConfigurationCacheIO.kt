@@ -549,7 +549,6 @@ class DefaultConfigurationCacheIO internal constructor(
             transformStepNodeFactory = service(),
             parallelStore = startParameter.isParallelStore,
             parallelLoad = startParameter.isParallelLoad,
-            internalServices = service(),
             problems = service(),
         )
 
