@@ -58,6 +58,7 @@ public class DefaultCapabilitiesConflictHandler implements CapabilitiesConflictH
         CapabilityInternal capability = candidate.getCapability();
 
         Set<NodeState> nodes = capabilityWithoutVersionToNodes.computeIfAbsent(capability.getCapabilityId(), k -> new LinkedHashSet<>());
+        nodes.removeIf(n -> !n.getComponent().isSelected());
         nodes.addAll(candidate.getImplicitCapabilityProviders());
 
         NodeState node = candidate.getNode();
