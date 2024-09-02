@@ -262,7 +262,7 @@ public abstract class JavaCompile extends AbstractCompile implements HasCompileO
         File toolchainJavaHome = javaCompilerTool.getMetadata().getInstallationPath().getAsFile();
 
         ForkOptions forkOptions = getOptions().getForkOptions();
-        File customJavaHome = forkOptions.getJavaHome();
+        File customJavaHome = forkOptions.getJavaHome().getAsFile().getOrNull();
         if (customJavaHome != null) {
             JavaExecutableUtils.validateMatchingFiles(
                 customJavaHome, "Toolchain from `javaHome` property on `ForkOptions`",
@@ -270,7 +270,7 @@ public abstract class JavaCompile extends AbstractCompile implements HasCompileO
             );
         }
 
-        String customExecutablePath = forkOptions.getExecutable();
+        String customExecutablePath = forkOptions.getExecutable().getOrNull();
         if (customExecutablePath != null) {
             // We do not match the custom executable against the compiler executable from the toolchain (javac),
             // because the custom executable can be set to the path of another tool in the toolchain such as a launcher (java).

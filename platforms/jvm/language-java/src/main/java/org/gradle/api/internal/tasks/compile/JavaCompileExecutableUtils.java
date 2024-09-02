@@ -34,12 +34,12 @@ public class JavaCompileExecutableUtils {
         }
 
         ForkOptions forkOptions = task.getOptions().getForkOptions();
-        File customJavaHome = forkOptions.getJavaHome();
+        File customJavaHome = forkOptions.getJavaHome().getAsFile().getOrNull();
         if (customJavaHome != null) {
             return SpecificInstallationToolchainSpec.fromJavaHome(objectFactory, customJavaHome);
         }
 
-        String customExecutable = forkOptions.getExecutable();
+        String customExecutable = forkOptions.getExecutable().getOrNull();
         if (customExecutable != null) {
             return SpecificInstallationToolchainSpec.fromJavaExecutable(objectFactory, customExecutable);
         }

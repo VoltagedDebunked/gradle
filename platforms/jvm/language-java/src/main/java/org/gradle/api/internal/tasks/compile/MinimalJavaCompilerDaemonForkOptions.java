@@ -30,9 +30,9 @@ public class MinimalJavaCompilerDaemonForkOptions extends MinimalCompilerDaemonF
 
     public MinimalJavaCompilerDaemonForkOptions(ForkOptions forkOptions) {
         super(forkOptions);
-        this.executable = forkOptions.getExecutable();
-        this.tempDir = forkOptions.getTempDir();
-        this.javaHome = forkOptions.getJavaHome();
+        this.executable = forkOptions.getExecutable().getOrNull();
+        this.tempDir = forkOptions.getTempDir().getOrNull();
+        this.javaHome = forkOptions.getJavaHome().getAsFile().getOrNull();
         setJvmArgs(forkOptions.getAllJvmArgs().get());
     }
 
