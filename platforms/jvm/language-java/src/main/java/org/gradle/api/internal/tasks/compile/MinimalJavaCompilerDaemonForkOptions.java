@@ -33,7 +33,7 @@ public class MinimalJavaCompilerDaemonForkOptions extends MinimalCompilerDaemonF
         this.executable = forkOptions.getExecutable();
         this.tempDir = forkOptions.getTempDir();
         this.javaHome = forkOptions.getJavaHome();
-        setJvmArgs(forkOptions.getAllJvmArgs());
+        setJvmArgs(forkOptions.getAllJvmArgs().get());
     }
 
     @Nullable
