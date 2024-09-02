@@ -15,7 +15,6 @@
  */
 package org.gradle.api.plugins.quality.internal;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.Callables;
@@ -213,17 +212,9 @@ public abstract class AbstractCodeQualityPlugin<T> implements Plugin<ProjectInte
         project.getTasks().named(JavaBasePlugin.CHECK_TASK_NAME, new Action<Task>() {
             @Override
             public void execute(Task task) {
-                task.dependsOn(new Callable<Object>() {
-                    @Override
-                    public Object call() {
-                        return Iterables.transform(extension.getSourceSets(), new Function<SourceSet, String>() {
-                            @Override
-                            public String apply(SourceSet sourceSet) {
-                                return sourceSet.getTaskName(taskBaseName, null);
-                            }
-                        });
-                    }
-                });
+                task.dependsOn(extension.getSourceSets().map(sourceSets ->
+                    Iterables.transform(sourceSets, sourceSet -> sourceSet.getTaskName(taskBaseName, null))
+                ));
             }
         });
     }

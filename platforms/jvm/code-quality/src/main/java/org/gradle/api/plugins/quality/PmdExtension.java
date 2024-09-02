@@ -44,6 +44,7 @@ public abstract class PmdExtension extends CodeQualityExtension {
     private final Property<Integer> threads;
 
     public PmdExtension(Project project) {
+        super();
         this.rulesMinimumPriority = project.getObjects().property(Integer.class);
         this.incrementalAnalysis = project.getObjects().property(Boolean.class);
         this.maxFailures = project.getObjects().property(Integer.class);

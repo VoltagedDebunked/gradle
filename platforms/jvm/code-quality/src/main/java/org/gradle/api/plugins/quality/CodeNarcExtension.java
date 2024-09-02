@@ -42,6 +42,7 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
     private String reportFormat;
 
     public CodeNarcExtension(Project project) {
+        super();
         this.project = project;
     }
 

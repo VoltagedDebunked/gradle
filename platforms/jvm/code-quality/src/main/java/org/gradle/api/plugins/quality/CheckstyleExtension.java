@@ -46,6 +46,7 @@ public abstract class CheckstyleExtension extends CodeQualityExtension {
     private final Property<Boolean> enableExternalDtdLoad;
 
     public CheckstyleExtension(Project project) {
+        super();
         this.project = project;
         this.configDirectory = project.getObjects().directoryProperty();
         this.enableExternalDtdLoad = project.getObjects().property(Boolean.class).convention(false);
