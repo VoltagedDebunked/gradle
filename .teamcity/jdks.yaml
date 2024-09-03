@@ -58,7 +58,7 @@ jdks:
     os: linux
     arch: aarch64
     vendor: "temurin"
-    version: "21.0.4+7"
+    version: "jdk-21.0.4+7"
     sha256: d768eecddd7a515711659e02caef8516b7b7177fa34880a56398fd9822593a79
   - params: [ "windows.java8.openjdk.64bit", "windows.java8.oracle.64bit" ]
     os: windows
