@@ -31,6 +31,7 @@ import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.internal.CollectionCallbackActionDecorator;
 import org.gradle.api.internal.DomainObjectContext;
 import org.gradle.api.internal.GradleInternal;
+import org.gradle.api.internal.artifacts.capability.CapabilitySelectorSerializer;
 import org.gradle.api.internal.artifacts.configurations.ConfigurationContainerInternal;
 import org.gradle.api.internal.artifacts.configurations.DefaultConfigurationContainer;
 import org.gradle.api.internal.artifacts.configurations.DefaultConfigurationFactory;
@@ -566,6 +567,7 @@ public class DefaultDependencyManagementServices implements DependencyManagement
             CalculatedValueContainerFactory calculatedValueContainerFactory,
             ComponentSelectorConverter componentSelectorConverter,
             AttributeContainerSerializer attributeContainerSerializer,
+            CapabilitySelectorSerializer capabilitySelectorSerializer,
             BuildState currentBuild,
             ComponentSelectionDescriptorFactory componentSelectionDescriptorFactory,
             ResolvedArtifactSetResolver artifactSetResolver,
@@ -593,6 +595,7 @@ public class DefaultDependencyManagementServices implements DependencyManagement
                 calculatedValueContainerFactory,
                 componentSelectorConverter,
                 attributeContainerSerializer,
+                capabilitySelectorSerializer,
                 currentBuild,
                 artifactSetResolver,
                 componentSelectionDescriptorFactory,
