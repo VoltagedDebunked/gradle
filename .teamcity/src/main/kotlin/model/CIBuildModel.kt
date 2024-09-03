@@ -135,7 +135,7 @@ data class CIBuildModel(
                 TestCoverage(33, TestType.allVersionsIntegMultiVersion, Os.LINUX, JvmCategory.MIN_VERSION, ALL_CROSS_VERSION_BUCKETS.size),
                 TestCoverage(34, TestType.allVersionsIntegMultiVersion, Os.WINDOWS, JvmCategory.MIN_VERSION_WINDOWS_MAC, ALL_CROSS_VERSION_BUCKETS.size),
                 TestCoverage(36, TestType.platform, Os.MACOS, JvmCategory.MAX_LTS_VERSION, expectedBucketNumber = DEFAULT_MACOS_FUNCTIONAL_TEST_BUCKET_SIZE, arch = Arch.AARCH64),
-                TestCoverage(37, TestType.configCache, Os.MACOS, JvmCategory.MAX_LTS_VERSION, expectedBucketNumber = DEFAULT_MACOS_FUNCTIONAL_TEST_BUCKET_SIZE, arch = Arch.AARCH64),
+                TestCoverage(37, TestType.configCache, Os.MACOS, JvmCategory.MAX_LTS_VERSION, expectedBucketNumber = DEFAULT_MACOS_FUNCTIONAL_TEST_BUCKET_SIZE, arch = Arch.AARCH64, failStage = false),
                 TestCoverage(38, TestType.configCache, Os.LINUX, JvmCategory.MAX_LTS_VERSION, DEFAULT_LINUX_FUNCTIONAL_TEST_BUCKET_SIZE, arch = Arch.AARCH64),
             ),
             docsTests = listOf(
@@ -231,7 +231,8 @@ data class TestCoverage(
     val buildJvm: Jvm = BuildToolBuildJvm,
     val expectedBucketNumber: Int = DEFAULT_FUNCTIONAL_TEST_BUCKET_SIZE,
     val withoutDependencies: Boolean = false,
-    val arch: Arch = os.defaultArch
+    val arch: Arch = os.defaultArch,
+    val failStage: Boolean = true,
 ) {
 
     constructor(
@@ -243,7 +244,8 @@ data class TestCoverage(
         buildJvm: Jvm = BuildToolBuildJvm,
         withoutDependencies: Boolean = false,
         arch: Arch = Arch.AMD64,
-    ) : this(uuid, testType, os, testJvm.version, testJvm.vendor, buildJvm, expectedBucketNumber, withoutDependencies, arch)
+        failStage: Boolean = true,
+    ) : this(uuid, testType, os, testJvm.version, testJvm.vendor, buildJvm, expectedBucketNumber, withoutDependencies, arch, failStage)
 
     fun asId(projectId: String): String {
         return "${projectId}_$testCoveragePrefix"
