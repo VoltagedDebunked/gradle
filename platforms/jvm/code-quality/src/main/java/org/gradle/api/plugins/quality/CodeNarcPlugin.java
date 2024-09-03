@@ -22,7 +22,6 @@ import org.gradle.api.Plugin;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.SourceDirectorySet;
-import org.gradle.api.internal.ConventionMapping;
 import org.gradle.api.plugins.GroovyBasePlugin;
 import org.gradle.api.plugins.JvmEcosystemPlugin;
 import org.gradle.api.plugins.quality.internal.AbstractCodeQualityPlugin;
@@ -111,12 +110,11 @@ public abstract class CodeNarcPlugin extends AbstractCodeQualityPlugin<CodeNarc>
     }
 
     private void configureTaskConventionMapping(Configuration configuration, CodeNarc task) {
-        ConventionMapping taskMapping = task.getConventionMapping();
-        taskMapping.map("codenarcClasspath", () -> configuration);
-        taskMapping.map("config", () -> extension.getConfig());
-        taskMapping.map("maxPriority1Violations", () -> extension.getMaxPriority1Violations().get());
-        taskMapping.map("maxPriority2Violations", () -> extension.getMaxPriority2Violations().get());
-        taskMapping.map("maxPriority3Violations", () -> extension.getMaxPriority3Violations().get());
+        task.getCodenarcClasspath().convention(configuration);
+        task.getConfigFile().convention(extension.getConfigFile());
+        task.getMaxPriority1Violations().convention(extension.getMaxPriority1Violations());
+        task.getMaxPriority2Violations().convention(extension.getMaxPriority2Violations());
+        task.getMaxPriority3Violations().convention(extension.getMaxPriority3Violations());
         task.getIgnoreFailuresProperty().convention(extension.getIgnoreFailures());
     }
 

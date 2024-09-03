@@ -34,6 +34,7 @@ class GradleBuildSanityCheckConfigurationCacheSmokeTest extends AbstractGradleBu
             ":tooling-api:toolingApiShadedJar",
             ":performance:verifyPerformanceScenarioDefinitions",
             ":checkSubprojectsInfo",
+            "--stacktrace"
         ]
 
         when:

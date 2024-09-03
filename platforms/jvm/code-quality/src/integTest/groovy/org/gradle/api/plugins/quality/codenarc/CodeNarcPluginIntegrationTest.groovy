@@ -49,12 +49,12 @@ class CodeNarcPluginIntegrationTest extends WellBehavedPluginTest implements Cod
                 task.with {
                     assert description == "Run CodeNarc analysis for ${sourceSet.name} classes"
                     assert source as List == sourceSet.groovy  as List
-                    assert codenarcClasspath == project.configurations.codenarc
+                    assert codenarcClasspath.files == project.configurations.codenarc.files
                     assert config.inputFiles.singleFile == project.file("config/codenarc/codenarc.xml")
-                    assert configFile == project.file("config/codenarc/codenarc.xml")
-                    assert maxPriority1Violations == 0
-                    assert maxPriority2Violations == 0
-                    assert maxPriority3Violations == 0
+                    assert configFile.asFile.get() == project.file("config/codenarc/codenarc.xml")
+                    assert maxPriority1Violations.get() == 0
+                    assert maxPriority2Violations.get() == 0
+                    assert maxPriority3Violations.get() == 0
                     assert reports.enabled*.name == ["html"]
                     assert reports.html.outputLocation.asFile.get() == project.file("build/reports/codenarc/${sourceSet.name}.html")
                     assert ignoreFailures == false
@@ -113,12 +113,12 @@ class CodeNarcPluginIntegrationTest extends WellBehavedPluginTest implements Cod
                 task.with {
                     assert description == "Run CodeNarc analysis for ${sourceSet.name} classes"
                     assert source as List == sourceSet.groovy as List
-                    assert codenarcClasspath == project.configurations.codenarc
+                    assert codenarcClasspath.files == project.configurations.codenarc.files
                     assert config.inputFiles.singleFile == project.file("codenarc-config")
-                    assert configFile == project.file("codenarc-config")
-                    assert maxPriority1Violations == 10
-                    assert maxPriority2Violations == 50
-                    assert maxPriority3Violations == 200
+                    assert configFile.asFile.get() == project.file("codenarc-config")
+                    assert maxPriority1Violations.get() == 10
+                    assert maxPriority2Violations.get() == 50
+                    assert maxPriority3Violations.get() == 200
                     assert reports.enabled*.name == ["xml"]
                     assert reports.xml.outputLocation.asFile.get() == project.file("codenarc-reports/${sourceSet.name}.xml")
                     assert ignoreFailures == true
@@ -157,15 +157,15 @@ class CodeNarcPluginIntegrationTest extends WellBehavedPluginTest implements Cod
         notExecuted(':codenarcCustom')
     }
 
-    def "can use legacy configFile extension property"() {
+    def "can use configFile extension property"() {
         given:
         buildFile << '''
             codenarc {
                 configFile = project.file("codenarc-config")
             }
-            assert project.codenarc.configFile == project.file("codenarc-config") // computed property
-            assert project.tasks.codenarcMain.configFile == project.file("codenarc-config")
-            assert project.tasks.codenarcTest.configFile == project.file("codenarc-config")
+            assert project.codenarc.configFile.asFile.get() == project.file("codenarc-config") // computed property
+            assert project.tasks.codenarcMain.configFile.asFile.get() == project.file("codenarc-config")
+            assert project.tasks.codenarcTest.configFile.asFile.get() == project.file("codenarc-config")
         '''.stripIndent()
 
         expect:

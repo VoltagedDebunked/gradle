@@ -17,10 +17,11 @@ package org.gradle.api.plugins.quality;
 
 import org.gradle.api.Project;
 import org.gradle.api.file.RegularFileProperty;
+import org.gradle.api.internal.file.FileOperations;
+import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.ProviderFactory;
 import org.gradle.api.resources.TextResource;
-import org.gradle.api.resources.TextResourceFactory;
 import org.gradle.internal.instrumentation.api.annotations.NotToBeReplacedByLazyProperty;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
 
@@ -32,12 +33,12 @@ import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty
 public abstract class CodeNarcExtension extends CodeQualityExtension {
 
     private final ProviderFactory providers;
-    private final TextResourceFactory textResourceFactory;
+    private final FileOperations fileOperations;
 
     public CodeNarcExtension(Project project) {
         super();
-        this.providers = project.getProviders();
-        this.textResourceFactory = project.getResources().getText();
+        providers = project.getProviders();
+        fileOperations = ((ProjectInternal) project).getServices().get(FileOperations.class);
         getMaxPriority1Violations().convention(0);
         getMaxPriority2Violations().convention(0);
         getMaxPriority3Violations().convention(0);
@@ -50,7 +51,7 @@ public abstract class CodeNarcExtension extends CodeQualityExtension {
      */
     @NotToBeReplacedByLazyProperty(because = "TextResource has no lazy replacement")
     public TextResource getConfig() {
-        return textResourceFactory.fromFile(getConfigFile());
+        return fileOperations.getResources().getText().fromFile(getConfigFile());
     }
 
     /**

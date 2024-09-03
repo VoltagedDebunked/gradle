@@ -23,11 +23,11 @@ class CodenarcTest extends Specification {
     def project = ProjectBuilder.builder().build()
     def codenarc = project.tasks.create("codenarc", CodeNarc)
 
-    def "can use legacy configFile property"() {
+    def "can use configFile property"() {
         codenarc.configFile = project.file("config/file.txt")
 
         expect:
-        codenarc.configFile == project.file("config/file.txt")
+        codenarc.configFile.asFile.get() == project.file("config/file.txt")
         codenarc.config.inputFiles.singleFile == project.file("config/file.txt")
     }
 
