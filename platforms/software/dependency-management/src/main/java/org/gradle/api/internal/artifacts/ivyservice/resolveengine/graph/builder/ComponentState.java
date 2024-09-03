@@ -454,7 +454,7 @@ public class ComponentState implements ComponentResolutionState, DependencyGraph
         }
     }
 
-    CapabilityInternal getImplicitCapability() {
+    public CapabilityInternal getImplicitCapability() {
         return implicitCapability;
     }
 
