@@ -13,13 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.gradle.internal.buildconfiguration;
-
-public class DaemonJvmPropertiesDefaults {
-    public static final String DAEMON_JVM_PROPERTIES_FILE = "gradle/gradle-daemon-jvm.properties";
-
-    public static final String TOOLCHAIN_VERSION_PROPERTY = "toolchainVersion";
-    public static final String TOOLCHAIN_VENDOR_PROPERTY = "toolchainVendor";
-    public static final String TOOLCHAIN_IMPLEMENTATION_PROPERTY = "toolchainImplementation";
-}
+/**
+ * Outputs trace files from build operations.
+ */
+package org.gradle.internal.operations.trace;
