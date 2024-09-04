@@ -387,9 +387,7 @@ class PropertyAssignmentIntegrationTest extends AbstractIntegrationSpec {
 
                 @TaskAction
                 void run() {
-                    if (input instanceof DirectoryProperty) {
-                        println("$RESULT_PREFIX" + input.get().asFile.name)
-                    } else if (input instanceof RegularFileProperty) {
+                    if (input instanceof FileSystemLocationProperty) {
                         println("$RESULT_PREFIX" + input.get().asFile.name)
                     } else if (input instanceof File) {
                         println("$RESULT_PREFIX" + input.name)
