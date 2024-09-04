@@ -15,7 +15,6 @@
  */
 package org.gradle.api.internal.artifacts
 
-import org.gradle.api.artifacts.component.BuildIdentifier
 import org.gradle.util.Path
 import spock.lang.Specification
 
@@ -24,7 +23,7 @@ import static org.gradle.util.Matchers.strictlyEquals
 class DefaultProjectComponentIdentifierTest extends Specification {
     def "is instantiated with non-null constructor parameter values"() {
         when:
-        def id = new DefaultProjectComponentIdentifier(Stub(BuildIdentifier), Path.path(":id:path"), Path.path(":project:path"), "projectName")
+        def id = new DefaultProjectComponentIdentifier(DefaultBuildIdentifier.ROOT, Path.path(":id:path"), Path.path(":project:path"), "projectName")
 
         then:
         id.projectPath == ':project:path'
@@ -52,7 +51,7 @@ class DefaultProjectComponentIdentifierTest extends Specification {
         newProjectId(DefaultBuildIdentifier.ROOT, path)
     }
 
-    private static newProjectId(BuildIdentifier build, String path) {
+    private static newProjectId(BuildIdentifierInternal build, String path) {
         new DefaultProjectComponentIdentifier(build, Path.path(path), Path.path(path), "name")
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package org.gradle.internal.build;
+package org.gradle.api.internal.artifacts;
 
-import org.gradle.api.internal.BuildDefinition;
-import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
-import org.gradle.internal.service.scopes.Scope;
-import org.gradle.internal.service.scopes.ServiceScope;
+import org.gradle.api.artifacts.component.BuildIdentifier;
+import org.gradle.util.Path;
 
-@ServiceScope(Scope.BuildTree.class)
-public interface IncludedBuildFactory {
-    IncludedBuildState createBuild(BuildIdentifierInternal buildIdentifier, BuildDefinition buildDefinition, boolean isImplicit, BuildState owner);
+public interface BuildIdentifierInternal extends BuildIdentifier {
+
+    Path getRawBuildPath();
+
 }

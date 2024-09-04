@@ -83,13 +83,12 @@ public class DefaultDependencyCoordinateResolverFactory implements DependencyCoo
             ResolutionBackedVariant resolutionBackedVariant = (ResolutionBackedVariant) variant;
             configuration = resolutionBackedVariant.getResolutionConfiguration();
 
-            boolean useResolvedCoordinates = resolutionBackedVariant.getPublishResolvedCoordinates();
-            if (useResolvedCoordinates && configuration == null) {
-                throw new InvalidUserDataException("Cannot enable dependency mapping without configuring a resolution configuration.");
-            } else if (useResolvedCoordinates) {
-                String rootVariantName = configuration.getName();
-                return configuration.getIncoming().getResolutionResult().getRootComponent()
-                    .map(root -> getVariantMappingResolvers(root, rootVariantName));
+            if (resolutionBackedVariant.getPublishResolvedCoordinates()) {
+                if (configuration == null) {
+                    throw new InvalidUserDataException("Cannot enable dependency mapping without configuring a resolution configuration.");
+                } else {
+                    return getDependencyMappingResolver(configuration);
+                }
             }
         }
 
@@ -110,8 +109,11 @@ public class DefaultDependencyCoordinateResolverFactory implements DependencyCoo
             }
 
             if (configuration != null) {
-                componentResolver = configuration.getIncoming().getResolutionResult().getRootComponent()
-                    .map(this::getComponentMappingResolver);
+                if (USE_LEGACY_VERSION_MAPPING) {
+                    componentResolver = getLegacyResolver(configuration);
+                } else {
+                    componentResolver = getDependencyMappingResolver(configuration).map(DependencyResolvers::getComponentResolver);
+                }
             }
         }
 
@@ -123,42 +125,37 @@ public class DefaultDependencyCoordinateResolverFactory implements DependencyCoo
         return componentResolver.map(cr -> new DependencyResolvers(new VariantResolverAdapter(cr), cr));
     }
 
-    private ComponentDependencyResolver getComponentMappingResolver(ResolvedComponentResult root) {
-        if (USE_LEGACY_VERSION_MAPPING) {
-            return new VersionMappingComponentDependencyResolver(projectDependencyResolver, root);
-        } else {
-            return new ResolutionBackedComponentDependencyResolver(
-                root,
-                moduleIdentifierFactory,
-                projectDependencyResolver
-            );
-        }
+    private Provider<DependencyResolvers> getDependencyMappingResolver(Configuration configuration) {
+        String rootVariantName = configuration.getName();
+        return configuration.getIncoming().getResolutionResult().getRootComponent()
+            .map(root -> getVariantMappingResolvers(root, rootVariantName));
+    }
+
+    private Provider<ComponentDependencyResolver> getLegacyResolver(Configuration configuration) {
+        return configuration.getIncoming().getResolutionResult().getRootComponent()
+            .map(root -> new VersionMappingComponentDependencyResolver(projectDependencyResolver, root));
     }
 
     private DependencyResolvers getVariantMappingResolvers(ResolvedComponentResult root, String rootVariantName) {
-        ComponentDependencyResolver componentResolver =
-            new ResolutionBackedComponentDependencyResolver(root, moduleIdentifierFactory, projectDependencyResolver);
-
         ResolvedVariantResult rootVariant = root.getVariants().stream()
             .filter(x -> x.getDisplayName().equals(rootVariantName))
             .findFirst().orElse(null);
 
-        VariantDependencyResolver variantResolver;
         if (rootVariant == null) {
             // Happens when the resolved configuration has no dependencies.
-            variantResolver = new VariantResolverAdapter(componentResolver);
+            ProjectOnlyComponentDependencyResolver resolver = new ProjectOnlyComponentDependencyResolver(projectDependencyResolver);
+            return new DependencyResolvers(new VariantResolverAdapter(resolver), resolver);
         } else {
-            variantResolver = new ResolutionBackedVariantDependencyResolver(
+            ResolutionBackedPublicationDependencyResolver resolver = new ResolutionBackedPublicationDependencyResolver(
                 projectDependencyResolver,
                 moduleIdentifierFactory,
                 root,
                 rootVariant,
-                attributeDesugaring,
-                componentResolver
+                attributeDesugaring
             );
+            return new DependencyResolvers(resolver, resolver);
         }
 
-        return new DependencyResolvers(variantResolver, componentResolver);
     }
 
     /**

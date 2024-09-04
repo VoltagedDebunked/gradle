@@ -16,7 +16,6 @@
 
 package org.gradle.composite.internal
 
-import org.gradle.api.artifacts.component.BuildIdentifier
 import org.gradle.api.internal.artifacts.DefaultBuildIdentifier
 import org.gradle.execution.plan.PlanExecutor
 import org.gradle.internal.build.BuildWorkGraph
@@ -46,7 +45,7 @@ class DefaultIncludedBuildTaskGraphTest extends AbstractIncludedBuildTaskGraphTe
 
     def "finalizes graph for a build when something scheduled"() {
         given:
-        def id = Stub(BuildIdentifier)
+        def id = DefaultBuildIdentifier.ROOT
         def workGraphController = Mock(BuildWorkGraphController)
         def workGraph = Mock(BuildWorkGraph)
         def build = build(id, workGraphController)
@@ -88,7 +87,7 @@ class DefaultIncludedBuildTaskGraphTest extends AbstractIncludedBuildTaskGraphTe
 
     def "cannot schedule tasks when graph is not yet being prepared for execution"() {
         given:
-        def id = Stub(BuildIdentifier)
+        def id = DefaultBuildIdentifier.ROOT
         build(id)
 
         when:
@@ -103,7 +102,7 @@ class DefaultIncludedBuildTaskGraphTest extends AbstractIncludedBuildTaskGraphTe
 
     def "cannot schedule tasks when graph has been prepared for execution"() {
         given:
-        def id = Stub(BuildIdentifier)
+        def id = DefaultBuildIdentifier.ROOT
         build(id)
 
         when:
@@ -120,7 +119,7 @@ class DefaultIncludedBuildTaskGraphTest extends AbstractIncludedBuildTaskGraphTe
 
     def "cannot schedule tasks when graph has started task execution"() {
         given:
-        def id = Stub(BuildIdentifier)
+        def id = DefaultBuildIdentifier.ROOT
         def workGraphController = Mock(BuildWorkGraphController)
         def workGraph = Mock(BuildWorkGraph)
         def build = build(id, workGraphController)
@@ -145,7 +144,7 @@ class DefaultIncludedBuildTaskGraphTest extends AbstractIncludedBuildTaskGraphTe
 
     def "cannot schedule tasks when graph has completed task execution"() {
         given:
-        def id = Stub(BuildIdentifier)
+        def id = DefaultBuildIdentifier.ROOT
         build(id)
 
         when:

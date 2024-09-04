@@ -19,12 +19,12 @@ package org.gradle.testfixtures.internal;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
-import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier;
 import org.gradle.api.internal.BuildDefinition;
 import org.gradle.api.internal.DocumentationRegistry;
 import org.gradle.api.internal.GradleInternal;
 import org.gradle.api.internal.StartParameterInternal;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.api.internal.artifacts.DefaultBuildIdentifier;
 import org.gradle.api.internal.file.FileResolver;
 import org.gradle.api.internal.file.temp.DefaultTemporaryFileProvider;
@@ -279,7 +279,7 @@ public class ProjectBuilderImpl {
         }
 
         @Override
-        public BuildIdentifier getBuildIdentifier() {
+        public BuildIdentifierInternal getBuildIdentifier() {
             return DefaultBuildIdentifier.ROOT;
         }
 

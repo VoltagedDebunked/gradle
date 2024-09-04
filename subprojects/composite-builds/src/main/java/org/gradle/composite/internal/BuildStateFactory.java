@@ -17,9 +17,9 @@
 package org.gradle.composite.internal;
 
 import org.gradle.StartParameter;
-import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.BuildDefinition;
 import org.gradle.api.internal.StartParameterInternal;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.initialization.BuildCancellationToken;
 import org.gradle.internal.Actions;
 import org.gradle.internal.build.BuildState;
@@ -68,7 +68,7 @@ public class BuildStateFactory {
         return new DefaultRootBuildState(buildDefinition, buildTreeState, listenerManager);
     }
 
-    public StandAloneNestedBuild createNestedBuild(BuildIdentifier buildIdentifier, Path identityPath, BuildDefinition buildDefinition, BuildState owner) {
+    public StandAloneNestedBuild createNestedBuild(BuildIdentifierInternal buildIdentifier, Path identityPath, BuildDefinition buildDefinition, BuildState owner) {
         DefaultNestedBuild build = new DefaultNestedBuild(buildIdentifier, identityPath, buildDefinition, owner, buildTreeState);
         // Expose any contributions from the parent's settings
         build.getMutableModel().setClassLoaderScope(() -> owner.getMutableModel().getSettings().getClassLoaderScope());
@@ -78,7 +78,7 @@ public class BuildStateFactory {
     public NestedBuildTree createNestedTree(
         BuildInvocationScopeId buildInvocationScopeId,
         BuildDefinition buildDefinition,
-        BuildIdentifier buildIdentifier,
+        BuildIdentifierInternal buildIdentifier,
         Path identityPath,
         BuildState owner
     ) {

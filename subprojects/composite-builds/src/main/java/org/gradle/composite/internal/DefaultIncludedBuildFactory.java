@@ -17,8 +17,8 @@
 package org.gradle.composite.internal;
 
 import org.gradle.api.InvalidUserDataException;
-import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.BuildDefinition;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.internal.build.BuildState;
 import org.gradle.internal.build.IncludedBuildFactory;
 import org.gradle.internal.build.IncludedBuildState;
@@ -49,7 +49,7 @@ public class DefaultIncludedBuildFactory implements IncludedBuildFactory {
     }
 
     @Override
-    public IncludedBuildState createBuild(BuildIdentifier buildIdentifier, BuildDefinition buildDefinition, boolean isImplicit, BuildState owner) {
+    public IncludedBuildState createBuild(BuildIdentifierInternal buildIdentifier, BuildDefinition buildDefinition, boolean isImplicit, BuildState owner) {
         validateBuildDirectory(buildDefinition.getBuildRootDir());
         return new DefaultIncludedBuild(
             buildIdentifier,

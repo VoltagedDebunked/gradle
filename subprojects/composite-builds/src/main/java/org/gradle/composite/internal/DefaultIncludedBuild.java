@@ -20,9 +20,9 @@ import com.google.common.base.Preconditions;
 import org.gradle.api.Action;
 import org.gradle.api.Transformer;
 import org.gradle.api.artifacts.DependencySubstitutions;
-import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.BuildDefinition;
 import org.gradle.api.internal.GradleInternal;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.api.tasks.TaskReference;
 import org.gradle.initialization.IncludedBuildSpec;
 import org.gradle.internal.build.BuildState;
@@ -36,14 +36,14 @@ import org.gradle.util.Path;
 import java.io.File;
 
 public class DefaultIncludedBuild extends AbstractCompositeParticipantBuildState implements IncludedBuildState {
-    private final BuildIdentifier buildIdentifier;
+    private final BuildIdentifierInternal buildIdentifier;
     private final Path identityPath;
     private final BuildDefinition buildDefinition;
     private final boolean isImplicit;
     private final IncludedBuildImpl model;
 
     public DefaultIncludedBuild(
-        BuildIdentifier buildIdentifier,
+        BuildIdentifierInternal buildIdentifier,
         BuildDefinition buildDefinition,
         boolean isImplicit,
         BuildState owner,
@@ -53,14 +53,14 @@ public class DefaultIncludedBuild extends AbstractCompositeParticipantBuildState
         // Use a defensive copy of the build definition, as it may be mutated during build execution
         super(buildTree, buildDefinition.newInstance(), owner);
         this.buildIdentifier = buildIdentifier;
-        this.identityPath = Path.path(buildIdentifier.getBuildPath());
+        this.identityPath = buildIdentifier.getRawBuildPath();
         this.buildDefinition = buildDefinition;
         this.isImplicit = isImplicit;
         this.model = instantiator.newInstance(IncludedBuildImpl.class, this);
     }
 
     @Override
-    public BuildIdentifier getBuildIdentifier() {
+    public BuildIdentifierInternal getBuildIdentifier() {
         return buildIdentifier;
     }
 

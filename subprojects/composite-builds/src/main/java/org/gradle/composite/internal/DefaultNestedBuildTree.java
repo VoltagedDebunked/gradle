@@ -16,9 +16,9 @@
 
 package org.gradle.composite.internal;
 
-import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.BuildDefinition;
 import org.gradle.api.internal.StartParameterInternal;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.initialization.BuildCancellationToken;
 import org.gradle.initialization.BuildRequestMetaData;
 import org.gradle.initialization.DefaultBuildRequestMetaData;
@@ -42,7 +42,7 @@ import java.util.function.Function;
 public class DefaultNestedBuildTree implements NestedBuildTree {
     private final BuildInvocationScopeId buildInvocationScopeId;
     private final BuildDefinition buildDefinition;
-    private final BuildIdentifier buildIdentifier;
+    private final BuildIdentifierInternal buildIdentifier;
     private final Path identityPath;
     private final BuildState owner;
     private final GradleUserHomeScopeServiceRegistry userHomeDirServiceRegistry;
@@ -52,7 +52,7 @@ public class DefaultNestedBuildTree implements NestedBuildTree {
     public DefaultNestedBuildTree(
         BuildInvocationScopeId buildInvocationScopeId,
         BuildDefinition buildDefinition,
-        BuildIdentifier buildIdentifier,
+        BuildIdentifierInternal buildIdentifier,
         Path identityPath,
         BuildState owner,
         GradleUserHomeScopeServiceRegistry userHomeDirServiceRegistry,

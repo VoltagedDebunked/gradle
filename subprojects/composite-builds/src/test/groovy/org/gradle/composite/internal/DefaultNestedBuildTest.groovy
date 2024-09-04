@@ -16,10 +16,10 @@
 
 package org.gradle.composite.internal
 
-import org.gradle.api.artifacts.component.BuildIdentifier
 import org.gradle.api.internal.BuildDefinition
 import org.gradle.api.internal.DocumentationRegistry
 import org.gradle.api.internal.GradleInternal
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal
 import org.gradle.initialization.exception.ExceptionAnalyser
 import org.gradle.internal.build.BuildLifecycleController
 import org.gradle.internal.build.BuildModelControllerServices
@@ -45,7 +45,7 @@ class DefaultNestedBuildTest extends Specification {
     def action = Mock(Function)
     def services = new DefaultServiceRegistry()
     def buildDefinition = Mock(BuildDefinition)
-    def buildIdentifier = Mock(BuildIdentifier)
+    def buildIdentifier = Mock(BuildIdentifierInternal)
     def exceptionAnalyzer = Mock(ExceptionAnalyser)
     def buildTreeController = Mock(BuildTreeLifecycleController)
     def buildTreeControllerFactory = Mock(BuildTreeLifecycleControllerFactory)

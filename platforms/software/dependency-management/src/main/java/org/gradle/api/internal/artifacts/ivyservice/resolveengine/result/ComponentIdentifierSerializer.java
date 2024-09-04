@@ -17,11 +17,11 @@
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.result;
 
 import com.google.common.base.Objects;
-import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.component.LibraryBinaryIdentifier;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.api.internal.artifacts.DefaultModuleIdentifier;
 import org.gradle.api.internal.artifacts.DefaultProjectComponentIdentifier;
 import org.gradle.api.internal.artifacts.dsl.dependencies.DependencyFactoryInternal;
@@ -55,25 +55,25 @@ public class ComponentIdentifierSerializer extends AbstractSerializer<ComponentI
         }
         switch (implementation) {
             case ROOT_PROJECT: {
-                BuildIdentifier buildIdentifier = buildIdentifierSerializer.read(decoder);
+                BuildIdentifierInternal buildIdentifier = buildIdentifierSerializer.read(decoder);
                 String projectName = decoder.readString();
                 ProjectIdentity projectIdentity = new ProjectIdentity(buildIdentifier, Path.ROOT, Path.ROOT, projectName);
                 return new DefaultProjectComponentIdentifier(projectIdentity);
             }
             case ROOT_BUILD_PROJECT: {
-                BuildIdentifier buildIdentifier = buildIdentifierSerializer.read(decoder);
+                BuildIdentifierInternal buildIdentifier = buildIdentifierSerializer.read(decoder);
                 Path projectPath = Path.path(decoder.readString());
                 ProjectIdentity projectIdentity = new ProjectIdentity(buildIdentifier, projectPath, projectPath, projectPath.getName());
                 return new DefaultProjectComponentIdentifier(projectIdentity);
             }
             case OTHER_BUILD_ROOT_PROJECT: {
-                BuildIdentifier buildIdentifier = buildIdentifierSerializer.read(decoder);
+                BuildIdentifierInternal buildIdentifier = buildIdentifierSerializer.read(decoder);
                 Path identityPath = Path.path(decoder.readString());
                 ProjectIdentity projectIdentity = new ProjectIdentity(buildIdentifier, identityPath, Path.ROOT, identityPath.getName());
                 return new DefaultProjectComponentIdentifier(projectIdentity);
             }
             case OTHER_BUILD_PROJECT: {
-                BuildIdentifier buildIdentifier = buildIdentifierSerializer.read(decoder);
+                BuildIdentifierInternal buildIdentifier = buildIdentifierSerializer.read(decoder);
                 Path identityPath = Path.path(decoder.readString());
                 Path projectPath = Path.path(decoder.readString());
                 ProjectIdentity projectIdentity = new ProjectIdentity(buildIdentifier, identityPath, projectPath, identityPath.getName());
@@ -189,7 +189,7 @@ public class ComponentIdentifierSerializer extends AbstractSerializer<ComponentI
     }
 
     private void writeBuildIdentifierOf(ProjectComponentIdentifier projectComponentIdentifier, Encoder encoder) throws IOException {
-        buildIdentifierSerializer.write(encoder, projectComponentIdentifier.getBuild());
+        buildIdentifierSerializer.write(encoder, (BuildIdentifierInternal) projectComponentIdentifier.getBuild());
     }
 
     private Implementation resolveImplementation(ComponentIdentifier value) {

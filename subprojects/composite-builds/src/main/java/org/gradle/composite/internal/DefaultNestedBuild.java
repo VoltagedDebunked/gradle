@@ -16,8 +16,8 @@
 
 package org.gradle.composite.internal;
 
-import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.BuildDefinition;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.initialization.IncludedBuildSpec;
 import org.gradle.initialization.exception.ExceptionAnalyser;
 import org.gradle.internal.UncheckedException;
@@ -43,12 +43,12 @@ import java.util.function.Function;
 class DefaultNestedBuild extends AbstractBuildState implements StandAloneNestedBuild {
     private final Path identityPath;
     private final BuildState owner;
-    private final BuildIdentifier buildIdentifier;
+    private final BuildIdentifierInternal buildIdentifier;
     private final BuildDefinition buildDefinition;
     private final BuildTreeLifecycleController buildTreeLifecycleController;
 
     DefaultNestedBuild(
-        BuildIdentifier buildIdentifier,
+        BuildIdentifierInternal buildIdentifier,
         Path identityPath,
         BuildDefinition buildDefinition,
         BuildState owner,
@@ -76,7 +76,7 @@ class DefaultNestedBuild extends AbstractBuildState implements StandAloneNestedB
     }
 
     @Override
-    public BuildIdentifier getBuildIdentifier() {
+    public BuildIdentifierInternal getBuildIdentifier() {
         return buildIdentifier;
     }
 

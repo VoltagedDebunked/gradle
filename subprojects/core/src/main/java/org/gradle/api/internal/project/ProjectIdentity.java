@@ -17,7 +17,7 @@
 package org.gradle.api.internal.project;
 
 import org.gradle.api.Describable;
-import org.gradle.api.artifacts.component.BuildIdentifier;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.internal.Describables;
 import org.gradle.util.Path;
 
@@ -26,7 +26,7 @@ import org.gradle.util.Path;
  */
 public final class ProjectIdentity implements Describable {
 
-    private final BuildIdentifier buildIdentifier;
+    private final BuildIdentifierInternal buildIdentifier;
     private final Path buildTreePath;
     private final Path projectPath;
     private final String projectName;
@@ -34,7 +34,7 @@ public final class ProjectIdentity implements Describable {
     private final Describable displayName;
 
     public ProjectIdentity(
-        BuildIdentifier buildIdentifier,
+        BuildIdentifierInternal buildIdentifier,
         Path buildTreePath,
         Path projectPath,
         String projectName
@@ -51,7 +51,7 @@ public final class ProjectIdentity implements Describable {
     /**
      * The identity of the owning build.
      */
-    public BuildIdentifier getBuildIdentifier() {
+    public BuildIdentifierInternal getBuildIdentifier() {
         return buildIdentifier;
     }
 

@@ -17,6 +17,7 @@
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.result;
 
 import org.gradle.api.artifacts.component.BuildIdentifier;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.api.internal.artifacts.DefaultBuildIdentifier;
 import org.gradle.api.internal.artifacts.ForeignBuildIdentifier;
 import org.gradle.internal.serialize.AbstractSerializer;
@@ -29,13 +30,13 @@ import java.io.IOException;
 /**
  * A thread-safe and reusable serializer for {@link BuildIdentifier}.
  */
-public class BuildIdentifierSerializer extends AbstractSerializer<BuildIdentifier> {
+public class BuildIdentifierSerializer extends AbstractSerializer<BuildIdentifierInternal> {
     private static final byte ROOT = 0;
     private static final byte LOCAL = 1;
     private static final byte FOREIGN = 2;
 
     @Override
-    public BuildIdentifier read(Decoder decoder) throws IOException {
+    public BuildIdentifierInternal read(Decoder decoder) throws IOException {
         byte type = decoder.readByte();
         switch (type) {
             case ROOT:
@@ -50,7 +51,7 @@ public class BuildIdentifierSerializer extends AbstractSerializer<BuildIdentifie
     }
 
     @Override
-    public void write(Encoder encoder, BuildIdentifier value) throws IOException {
+    public void write(Encoder encoder, BuildIdentifierInternal value) throws IOException {
         if (value == DefaultBuildIdentifier.ROOT) {
             encoder.writeByte(ROOT);
         } else if (value instanceof ForeignBuildIdentifier) {

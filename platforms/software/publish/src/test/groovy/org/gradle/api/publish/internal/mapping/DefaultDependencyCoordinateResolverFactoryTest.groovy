@@ -161,8 +161,8 @@ class DefaultDependencyCoordinateResolverFactoryTest extends Specification {
 
         expect:
         with(factory.createCoordinateResolvers(variant, versionMappingStrategy).get()) {
-            variantResolver instanceof ResolutionBackedVariantDependencyResolver
-            componentResolver instanceof ResolutionBackedComponentDependencyResolver
+            variantResolver instanceof ResolutionBackedPublicationDependencyResolver
+            componentResolver instanceof ResolutionBackedPublicationDependencyResolver
         }
     }
 

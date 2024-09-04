@@ -21,8 +21,8 @@ import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.util.Path;
 
-public class DefaultBuildIdentifier implements BuildIdentifier {
-    public static final BuildIdentifier ROOT = new DefaultBuildIdentifier(Path.ROOT);
+public class DefaultBuildIdentifier implements BuildIdentifierInternal {
+    public static final BuildIdentifierInternal ROOT = new DefaultBuildIdentifier(Path.ROOT);
     private final Path buildPath;
 
     public DefaultBuildIdentifier(Path buildPath) {
@@ -36,6 +36,11 @@ public class DefaultBuildIdentifier implements BuildIdentifier {
     @Override
     public String getBuildPath() {
         return buildPath.toString();
+    }
+
+    @Override
+    public Path getRawBuildPath() {
+        return buildPath;
     }
 
     @SuppressWarnings("deprecation")

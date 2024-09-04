@@ -32,7 +32,7 @@ public class DefaultProjectComponentIdentifier implements ProjectComponentIdenti
      * Prefer {@link #DefaultProjectComponentIdentifier(ProjectIdentity)}.
      */
     @VisibleForTesting
-    public DefaultProjectComponentIdentifier(BuildIdentifier buildIdentifier, Path identityPath, Path projectPath, String projectName) {
+    public DefaultProjectComponentIdentifier(BuildIdentifierInternal buildIdentifier, Path identityPath, Path projectPath, String projectName) {
         this(new ProjectIdentity(buildIdentifier, identityPath, projectPath, projectName));
     }
 

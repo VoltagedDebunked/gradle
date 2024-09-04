@@ -21,6 +21,7 @@ import org.gradle.api.GradleException;
 import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.BuildDefinition;
 import org.gradle.api.internal.SettingsInternal;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.api.internal.artifacts.DefaultBuildIdentifier;
 import org.gradle.initialization.buildsrc.BuildSrcDetector;
 import org.gradle.internal.build.BuildAddedListener;
@@ -177,7 +178,7 @@ public class DefaultIncludedBuildRegistry implements BuildStateRegistry, Stoppab
 
         BuildDefinition buildDefinition = buildStateFactory.buildDefinitionFor(buildSrcDir, owner);
         Path identityPath = assignPath(owner, buildDefinition.getName(), buildDefinition.getBuildRootDir());
-        BuildIdentifier buildIdentifier = idFor(identityPath);
+        BuildIdentifierInternal buildIdentifier = idFor(identityPath);
         StandAloneNestedBuild build = buildStateFactory.createNestedBuild(buildIdentifier, identityPath, buildDefinition, owner);
         buildSrcBuildsByOwner.put(owner, build);
         nestedBuildsByRootDir.put(buildSrcDir, build);
@@ -193,7 +194,7 @@ public class DefaultIncludedBuildRegistry implements BuildStateRegistry, Stoppab
         String name = MoreObjects.firstNonNull(buildName, dir.getName());
         validateNameIsNotBuildSrc(name, dir);
         Path identityPath = assignPath(owner, name, dir);
-        BuildIdentifier buildIdentifier = idFor(identityPath);
+        BuildIdentifierInternal buildIdentifier = idFor(identityPath);
         return buildStateFactory.createNestedTree(buildInvocationScopeId, buildDefinition, buildIdentifier, identityPath, owner);
     }
 
@@ -229,7 +230,7 @@ public class DefaultIncludedBuildRegistry implements BuildStateRegistry, Stoppab
             }
             validateNameIsNotBuildSrc(buildName, buildDir);
             Path idPath = buildPath != null ? buildPath : assignPath(rootBuild, buildName, buildDir);
-            BuildIdentifier buildIdentifier = idFor(idPath);
+            BuildIdentifierInternal buildIdentifier = idFor(idPath);
 
             includedBuild = includedBuildFactory.createBuild(buildIdentifier, buildDefinition, isImplicit, rootBuild);
             includedBuildsByRootDir.put(buildDir, includedBuild);
@@ -245,7 +246,7 @@ public class DefaultIncludedBuildRegistry implements BuildStateRegistry, Stoppab
         return includedBuild;
     }
 
-    private static BuildIdentifier idFor(Path absoluteBuildPath) {
+    private static BuildIdentifierInternal idFor(Path absoluteBuildPath) {
         return new DefaultBuildIdentifier(absoluteBuildPath);
     }
 

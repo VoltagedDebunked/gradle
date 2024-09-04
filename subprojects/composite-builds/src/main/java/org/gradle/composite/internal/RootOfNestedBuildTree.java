@@ -17,11 +17,11 @@
 package org.gradle.composite.internal;
 
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
-import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier;
 import org.gradle.api.internal.BuildDefinition;
 import org.gradle.api.internal.GradleInternal;
 import org.gradle.api.internal.StartParameterInternal;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.initialization.RunNestedBuildBuildOperationType;
 import org.gradle.initialization.exception.ExceptionAnalyser;
 import org.gradle.initialization.layout.BuildLayout;
@@ -54,13 +54,13 @@ import java.util.Set;
 import java.util.function.Function;
 
 public class RootOfNestedBuildTree extends AbstractBuildState implements NestedRootBuild {
-    private final BuildIdentifier buildIdentifier;
+    private final BuildIdentifierInternal buildIdentifier;
     private final Path identityPath;
     private final BuildTreeLifecycleController buildTreeLifecycleController;
 
     public RootOfNestedBuildTree(
         BuildDefinition buildDefinition,
-        BuildIdentifier buildIdentifier,
+        BuildIdentifierInternal buildIdentifier,
         Path identityPath,
         BuildState owner,
         BuildTreeState buildTree
@@ -94,7 +94,7 @@ public class RootOfNestedBuildTree extends AbstractBuildState implements NestedR
     }
 
     @Override
-    public BuildIdentifier getBuildIdentifier() {
+    public BuildIdentifierInternal getBuildIdentifier() {
         return buildIdentifier;
     }
 

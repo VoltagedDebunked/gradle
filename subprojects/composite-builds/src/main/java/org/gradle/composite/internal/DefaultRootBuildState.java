@@ -17,10 +17,10 @@
 package org.gradle.composite.internal;
 
 import org.gradle.BuildResult;
-import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.BuildDefinition;
 import org.gradle.api.internal.GradleInternal;
 import org.gradle.api.internal.StartParameterInternal;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.api.internal.artifacts.DefaultBuildIdentifier;
 import org.gradle.deployment.internal.DefaultDeploymentRegistry;
 import org.gradle.initialization.IncludedBuildSpec;
@@ -82,7 +82,7 @@ class DefaultRootBuildState extends AbstractCompositeParticipantBuildState imple
     }
 
     @Override
-    public BuildIdentifier getBuildIdentifier() {
+    public BuildIdentifierInternal getBuildIdentifier() {
         return DefaultBuildIdentifier.ROOT;
     }
 

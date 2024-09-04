@@ -16,8 +16,8 @@
 
 package org.gradle.internal.build;
 
-import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.GradleInternal;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.api.internal.project.ProjectState;
 import org.gradle.initialization.IncludedBuildSpec;
 import org.gradle.internal.DisplayName;
@@ -37,7 +37,7 @@ public interface BuildState {
     /**
      * Returns the identifier for this build. The identifier is fixed for the lifetime of the build.
      */
-    BuildIdentifier getBuildIdentifier();
+    BuildIdentifierInternal getBuildIdentifier();
 
     /**
      * Returns an identifying path for this build in the build tree. This path is fixed for the lifetime of the build.
