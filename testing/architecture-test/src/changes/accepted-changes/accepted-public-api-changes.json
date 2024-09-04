@@ -23,6 +23,30 @@
             "changes": [
                 "Method added to public class"
             ]
+        },
+        {
+            "type": "org.gradle.api.tasks.scala.ScalaDoc",
+            "member": "Method org.gradle.api.tasks.scala.ScalaDoc.scalaDocOptions(org.gradle.api.Action)",
+            "acceptation": "No need to incubate",
+            "changes": [
+                "Method added to public class"
+            ]
+        },
+        {
+            "type": "org.gradle.language.scala.tasks.BaseScalaCompileOptions",
+            "member": "Method org.gradle.language.scala.tasks.BaseScalaCompileOptions.forkOptions(org.gradle.api.Action)",
+            "acceptation": "No need to incubate",
+            "changes": [
+                "Method added to public class"
+            ]
+        },
+        {
+            "type": "org.gradle.language.scala.tasks.BaseScalaCompileOptions",
+            "member": "Method org.gradle.language.scala.tasks.BaseScalaCompileOptions.incrementalOptions(org.gradle.api.Action)",
+            "acceptation": "No need to incubate",
+            "changes": [
+                "Method added to public class"
+            ]
         }
     ]
 }
