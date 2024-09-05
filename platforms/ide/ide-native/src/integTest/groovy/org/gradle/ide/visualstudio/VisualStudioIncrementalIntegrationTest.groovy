@@ -347,7 +347,7 @@ class VisualStudioIncrementalIntegrationTest extends AbstractVisualStudioIntegra
                     projectFile.withXml { xml ->
                         Node globals = xml.asNode().PropertyGroup.find({it.'@Label' == 'Globals'}) as Node
                         globals.appendNode("ExtraInfo", "Some extra info")
-                        globals.appendNode("ProjectName", project.name)
+                        globals.appendNode("ProjectName", "project-name")
                     }
         """
         run "visualStudio"
@@ -391,7 +391,7 @@ class VisualStudioIncrementalIntegrationTest extends AbstractVisualStudioIntegra
         when:
         buildFile.text = buildFile.text.replace "filtersFile.withXml { }", """
                     filtersFile.withXml { xml ->
-                        xml.asNode().appendNode("ExtraContent", "Filter - \${project.name}")
+                        xml.asNode().appendNode("ExtraContent", "Filter - project-name")
                     }
         """
         run "visualStudio"
@@ -435,11 +435,9 @@ class VisualStudioIncrementalIntegrationTest extends AbstractVisualStudioIntegra
         when:
         buildFile.text = buildFile.text.replace "solutionFile.withContent { }", '''
                     solutionFile.withContent { content ->
-                        String projectList = projects.collect({it.name}).join(',')
-
                         content.text = content.text.replace("EndGlobal", """
                             GlobalSection(MyGlobalSection)
-                            Project-list: ${projectList}
+                            Project-list: project-a,project-b
                             EndGlobalSection
                             EndGlobal
                         """)
