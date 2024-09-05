@@ -27,14 +27,6 @@
         },
         {
             "type": "org.gradle.api.reporting.dependencies.HtmlDependencyReportTask",
-            "member": "Method org.gradle.api.reporting.dependencies.HtmlDependencyReportTask.getObjectFactory()",
-            "acceptation": "Changed to idiomatic injection",
-            "changes": [
-                "Method is now abstract"
-            ]
-        },
-        {
-            "type": "org.gradle.api.reporting.dependencies.HtmlDependencyReportTask",
             "member": "Method org.gradle.api.reporting.dependencies.HtmlDependencyReportTask.getVersionComparator()",
             "acceptation": "Changed to idiomatic injection",
             "changes": [
