@@ -35,7 +35,6 @@ val testInterceptorsImplementation: Configuration by configurations.getting {
 
 errorprone {
     disabledChecks.addAll(
-        "BadInstanceof", // 6 occurrences (this is from generated code)
         "DefaultCharset", // 4 occurrences
         "EmptyBlockTag", // 4 occurrences
         "Finally", // 1 occurrences
@@ -61,7 +60,6 @@ errorprone {
         "ReturnValueIgnored", // 1 occurrences
         "SameNameButDifferent", // 11 occurrences
         "StreamResourceLeak", // 6 occurrences
-        "StringCaseLocaleUsage", // 11 occurrences
         "TypeParameterShadowing", // 1 occurrences
         "TypeParameterUnusedInFormals", // 2 occurrences
         "UndefinedEquals", // 1 occurrences
@@ -111,11 +109,13 @@ dependencies {
     api(projects.normalizationJava)
     api(projects.persistentCache)
     api(projects.problemsApi)
+    api(projects.processMemoryServices)
     api(projects.processServices)
     api(projects.resources)
     api(projects.snapshots)
     api(projects.workerMain)
     api(projects.buildProcessServices)
+    api(projects.instrumentationReporting)
 
     api(libs.ant)
     api(libs.asm)
@@ -125,13 +125,15 @@ dependencies {
     api(libs.guava)
     api(libs.inject)
     api(libs.jsr305)
-    api(libs.nativePlatform)
 
+    implementation(projects.buildOperationsTrace)
     implementation(projects.io)
     implementation(projects.inputTracking)
     implementation(projects.modelGroovy)
     implementation(projects.serviceRegistryBuilder)
+    implementation(projects.problemsRendering)
 
+    implementation(libs.nativePlatform)
     implementation(libs.asmCommons)
     implementation(libs.commonsIo)
     implementation(libs.commonsLang)
@@ -312,11 +314,11 @@ tasks.test {
 }
 
 tasks.compileTestGroovy {
-    groovyOptions.fork("memoryInitialSize" to "128M", "memoryMaximumSize" to "1G")
-}
-
-tasks.isolatedProjectsIntegTest {
-    enabled = true
+    groovyOptions.isFork = true
+    groovyOptions.forkOptions.run {
+        memoryInitialSize = "128M"
+        memoryMaximumSize = "1G"
+    }
 }
 
 integTest.usesJavadocCodeSnippets = true

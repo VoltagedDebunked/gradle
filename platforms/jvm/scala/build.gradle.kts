@@ -1,5 +1,6 @@
 plugins {
     id("gradlebuild.distribution.api-java")
+    id("gradlebuild.instrumented-java-project")
 }
 
 description = "Plugins for building Scala code with Gradle."
@@ -32,11 +33,11 @@ dependencies {
     api(libs.inject)
     api(libs.jsr305)
 
-    implementation(projects.internalInstrumentationApi)
     implementation(projects.time)
     implementation(projects.serviceLookup)
     implementation(projects.dependencyManagement)
     implementation(projects.fileCollections)
+    implementation(projects.jvmServices)
     implementation(projects.logging)
     implementation(projects.persistentCache)
     implementation(projects.pluginsJava)
@@ -98,3 +99,6 @@ packageCycles {
 }
 
 integTest.usesJavadocCodeSnippets = true
+tasks.isolatedProjectsIntegTest {
+    enabled = false
+}

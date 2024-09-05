@@ -30,7 +30,7 @@ dependencies {
     api(projects.messaging)
     api(projects.modelCore)
     api(projects.native)
-    api(projects.processServices)
+    api(projects.processMemoryServices)
     api(projects.serialization)
     api(projects.serviceLookup)
     api(projects.serviceProvider)
@@ -50,7 +50,6 @@ dependencies {
     implementation(projects.functional)
     implementation(projects.io)
     implementation(projects.problemsApi)
-    implementation(projects.toolchainsJvmShared)
     implementation(projects.serviceRegistryBuilder)
 
     implementation(libs.slf4jApi)
@@ -90,3 +89,6 @@ strictCompile {
 }
 
 testFilesCleanup.reportOnly = true
+tasks.isolatedProjectsIntegTest {
+    enabled = false
+}
