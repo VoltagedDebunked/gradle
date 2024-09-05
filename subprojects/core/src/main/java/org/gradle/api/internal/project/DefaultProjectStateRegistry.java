@@ -18,6 +18,7 @@ package org.gradle.api.internal.project;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier;
+import org.gradle.api.internal.artifacts.BuildIdentifierInternal;
 import org.gradle.api.internal.artifacts.DefaultProjectComponentIdentifier;
 import org.gradle.api.internal.initialization.ClassLoaderScope;
 import org.gradle.initialization.DefaultProjectDescriptor;
@@ -271,7 +272,7 @@ public class DefaultProjectStateRegistry implements ProjectStateRegistry, Closea
             this.projectName = projectName;
             this.descriptor = descriptor;
             this.projectFactory = projectFactory;
-            this.identity = new ProjectIdentity(owner.getBuildIdentifier(), identityPath, projectPath, projectName);
+            this.identity = new ProjectIdentity((BuildIdentifierInternal) owner.getBuildIdentifier(), identityPath, projectPath, projectName);
             this.identifier = new DefaultProjectComponentIdentifier(identity);
             this.allProjectsLock = workerLeaseService.getAllProjectsLock(owner.getIdentityPath());
             this.projectLock = workerLeaseService.getProjectLock(owner.getIdentityPath(), identityPath);
